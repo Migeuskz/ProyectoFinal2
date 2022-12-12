@@ -6,6 +6,7 @@
 package com.mycompany.proyectofinal;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -14,7 +15,7 @@ import java.io.InputStreamReader;
  */
 public class ProyectoFinal {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         System.out.println("😢😢😢😢😢😢😢😢😢😢😢😢😢😢😢");
         BufferedReader bufer =  new BufferedReader(new InputStreamReader(System.in));    
