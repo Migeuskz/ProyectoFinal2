@@ -65,6 +65,8 @@ public class ProyectoFinal {
                     
                     //Probamos el estado de la pila si está vacia
                 case 2:
+                    System.out.println("Contenido del archivo");
+                    leerArchivo(entrada);
                     System.out.println("El estado actual del Baul: ");
                     if(pila.isEmpty()){
                         System.out.println("El Baul esta vacio \n");
@@ -98,6 +100,7 @@ public class ProyectoFinal {
                 case 4:
                     System.out.println("------------------------------");
                     System.out.println("Estado actual del Baul: ");
+                    
                     if(pila.isFull()){
                         System.out.println("El baul está lleno");
                     }else{
