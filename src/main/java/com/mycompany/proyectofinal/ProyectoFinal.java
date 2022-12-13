@@ -5,27 +5,105 @@
 
 package com.mycompany.proyectofinal;
 
+import static com.mycompany.proyectofinal.Acciones.leerArchivo;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 /**
  *
  * @author MigueSkz
  */
 public class ProyectoFinal {
+    
+    public static void leerArchivo(String name){
+        File archivo = null;//apunta a un archivo físico del dd
+        FileReader fr = null;//para leer el archivo
+        BufferedReader bufer = null;
+        
+        try{
+            //creamos un apuntador a un archivo en físico
+            archivo = new File("E:\\" + name + ".txt" );
+            //abremos el archivo para lectura
+            fr = new FileReader(archivo);
+            //configurar bufer para hacer la lectura
+            bufer = new BufferedReader(fr);
+            
+            //Lectura del contenido del archivo 
+            String linea;
+             //mientras haya información en el archivo 
+            while((linea = bufer.readLine()) != null)
+                System.out.println("Linea del archivo: " + linea);
+            
+        }catch(Exception e){
+            System.out.println("Error: No se encuentra el archivo");
+            e.printStackTrace();
+        }finally{
+            //Esta cláusula se ejecuta siempre
+            //Se cierra el archivo
+            try{
+                if(null != fr){
+                    //Si se logró abrir el archivo, debemos cerrarlo.
+                    fr.close();
+                }
+            }catch(Exception e2){
+                System.out.println("Error al cerrar el archivo");
+                e2.printStackTrace();
+            }
+        }
+    }
+    
+    public static void escribirArchivo(String name){
+        FileWriter archivo = null; 
+        PrintWriter pw = null;
+        BufferedReader bufer2 = new BufferedReader(new InputStreamReader(System.in));
+        String entrada;
+        char respuesta;
+        try{
+            archivo = new FileWriter("E:\\" + name + ".txt");
+            pw = new PrintWriter(archivo);
+            do{
+                System.out.println("Escribe la información a guardar en el archivo: ");
+                entrada = bufer2.readLine();
+                //Agrega lo leído en teclado al archivo en disco
+                pw.println(entrada);
+                System.out.println("Escribe s para continuar, n para parar: ");
+                entrada = bufer2.readLine();
+                respuesta = entrada.charAt(0);
+            }while(respuesta != 'n');
+            
+        }catch(Exception e){
+            System.out.println("Error al escribir el archivo: " + name);
+            e.printStackTrace();
+        }finally{
+            try{
+                //Cerrar el archivo si es que se pudo abrir para escritura
+                if(null != archivo){
+                    archivo.close();
+                }
+            }catch(Exception e2){
+                System.out.println("Error al cerrar el archivo " + name);
+                e2.printStackTrace();
+            }
+        }
+    }
+    
 
     public static void main(String[] args) throws IOException {
         
         Stack pila = null;
-        BufferedReader bufer =  new BufferedReader(new InputStreamReader(System.in));    
+        BufferedReader buferT =  new BufferedReader(new InputStreamReader(System.in));    
         String entrada;
-        
+        String fileName;
         int t;
         Data<Double> dato;
         int opcion;
         char respuesta;
-        
+        Acciones acciones = new Acciones();
     
         System.out.println("Este es un Pograma que Creaar un Archivo mediande una Pila... :) ");
         System.out.println("😢😢😢😢😢😢😢😢😢😢😢😢😢😢😢");
@@ -44,7 +122,7 @@ public class ProyectoFinal {
             System.out.println("6. Terminar Programa...");
             System.out.println("++++++++++++++++++++++++++++++++++++++++++");
             System.out.println();
-            entrada =bufer.readLine();
+            entrada =buferT.readLine();
             opcion = Integer.parseInt(entrada);
             
             switch(opcion){
@@ -52,14 +130,16 @@ public class ProyectoFinal {
                     System.out.println("=================================");
                     System.out.println("Escribe el nombre del Baul...");
                     System.out.println();
-                    entrada = bufer.readLine();
-                    //nombre = entrada;
+                    entrada = buferT.readLine();
+                    fileName = entrada;
+                    escribirArchivo(fileName);
                     System.out.println();
                     //Para contruir la pila, se pide el tamaño de la pila (Cuantos elementos guardará)
                     System.out.println("Escribe el tamaño del Baul: ");
-                    entrada = bufer.readLine();
+                    entrada = buferT.readLine();
                     t = Integer.parseInt(entrada);
                     pila = new Stack(t);
+                    
                     
                     break;
                     
@@ -80,12 +160,12 @@ public class ProyectoFinal {
                     System.out.println("=================================");
                     do{
                         System.out.println("Escribe el dato ( double ) a introducir ");
-                        entrada = bufer.readLine();
+                        entrada = buferT.readLine();
                         dato = new Data<>(Double.parseDouble(entrada));
                         if(pila.push(dato)){
                             System.out.println("Objeto introducido con exito!");
                             System.out.println("Quieres introducir más datos? Escriba n para parar: ");
-                            entrada = bufer.readLine();
+                            entrada = buferT.readLine();
                             respuesta = entrada.charAt(0);
                         }
                         else{
